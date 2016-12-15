@@ -1,0 +1,12 @@
+[run]
+branch = True
+source = txpasslib
+omit =
+    src/txpasslib/_version.py
+    src/txpasslib/interfaces.py
+
+[paths]
+source =
+    src/txpasslib
+    .tox/*/lib/python*/site-packages/txpasslib
+    .tox/*/site-packages/txpasslib
