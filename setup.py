@@ -32,7 +32,14 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules',
         ],
     install_requires=[
+        'attrs>=16.0.0',
         'passlib>=1.7.0',
         'Twisted>=15.5.0',
         ],
+    extras_require={
+        'test': [
+            'testtools>=2.2.0',
+            'hypothesis>=3.6.0,<4.0.0',
+            ],
+        },
     )
