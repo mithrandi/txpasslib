@@ -14,9 +14,9 @@ def defer_to_worker(deliver, worker, work, *args, **kwargs):
             result = work(*args, **kwargs)
         except BaseException:
             f = Failure()
-            deliver(lambda: deferred.errback(f))
+            deliver(deferred.errback, f)
         else:
-            deliver(lambda: deferred.callback(result))
+            deliver(deferred.callback, result)
     worker.do(wrapped_work)
     return deferred
 
