@@ -1,6 +1,6 @@
 from operator import attrgetter
 
-from testtools.matchers import AfterPreprocessing
+from testtools.matchers import AfterPreprocessing, Equals, MatchesAll
 from testtools.twistedsupport import failed
 
 
@@ -11,4 +11,10 @@ def failed_with(matcher):
     return failed(AfterPreprocessing(attrgetter('value'), matcher))
 
 
-__all__ = ['failed_with']
+def performed(perform, matcher):
+    return MatchesAll(
+        AfterPreprocessing(lambda _: perform(), Equals(True)),
+        matcher)
+
+
+__all__ = ['failed_with', 'performed']

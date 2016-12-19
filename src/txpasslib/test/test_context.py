@@ -2,13 +2,14 @@ from hypothesis import strategies as s
 from hypothesis import given
 from passlib.context import CryptContext
 from testtools import TestCase
-from testtools.matchers import Always, Equals, IsInstance
+from testtools.matchers import (
+    AfterPreprocessing, Equals, IsInstance, MatchesAll)
 from testtools.twistedsupport import succeeded
 from twisted._threads import createMemoryWorker
 
 from txpasslib.context import TxCryptContext
 from txpasslib.test.doubles import SynchronousReactorThreads
-from txpasslib.test.matchers import failed_with
+from txpasslib.test.matchers import failed_with, performed
 
 
 class ContextTests(TestCase):
@@ -26,18 +27,18 @@ class ContextTests(TestCase):
         ctx = TxCryptContext(
             CryptContext(schemes=['plaintext']),
             reactor, worker)
-        d = ctx.hash(password)
-        perform()
-        self.assertThat(d, succeeded(Always()))
-        password_hash = d.result
-
-        d = ctx.verify(password, password_hash)
-        perform()
-        self.assertThat(d, succeeded(Equals(True)))
-
-        d = ctx.verify(password + u'junk', password_hash)
-        perform()
-        self.assertThat(d, succeeded(Equals(False)))
+        self.assertThat(
+            ctx.hash(password),
+            performed(
+                perform,
+                succeeded(
+                    MatchesAll(
+                        AfterPreprocessing(
+                            lambda h: ctx.verify(password, h),
+                            performed(perform, succeeded(Equals(True)))),
+                        AfterPreprocessing(
+                            lambda h: ctx.verify(password + u'junk', h),
+                            performed(perform, succeeded(Equals(False))))))))
 
     def test_verify_nonsense(self):
         """
@@ -48,9 +49,9 @@ class ContextTests(TestCase):
         ctx = TxCryptContext(
             CryptContext(schemes=['plaintext']),
             reactor, worker)
-        d = ctx.hash(42)
-        perform()
-        self.assertThat(d, failed_with(IsInstance(TypeError)))
+        self.assertThat(
+            ctx.hash(42),
+            performed(perform, failed_with(IsInstance(TypeError))))
 
 
 __all__ = ['ContextTests']
