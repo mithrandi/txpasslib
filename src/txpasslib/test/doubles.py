@@ -11,7 +11,7 @@ class SynchronousReactorThreads(object):
     An implementation of ``IReactorFromThreads`` that calls things
     synchronously in the same thread.
     """
-    def callFromThread(self, f, *args, **kwargs):
+    def callFromThread(self, f, *args, **kwargs):  # noqa
         f(*args, **kwargs)
 
 
