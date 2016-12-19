@@ -11,4 +11,4 @@ def failed_with(matcher):
     return failed(AfterPreprocessing(attrgetter('value'), matcher))
 
 
-__init__ = ['failed_with']
+__all__ = ['failed_with']

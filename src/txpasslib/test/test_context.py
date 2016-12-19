@@ -53,4 +53,4 @@ class ContextTests(TestCase):
         self.assertThat(d, failed_with(IsInstance(TypeError)))
 
 
-__init__ = ['ContextTests']
+__all__ = ['ContextTests']

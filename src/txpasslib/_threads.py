@@ -21,4 +21,4 @@ def defer_to_worker(deliver, worker, work, *args, **kwargs):
     return deferred
 
 
-__init__ = ['defer_to_worker']
+__all__ = ['defer_to_worker']
