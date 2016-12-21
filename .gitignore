@@ -1,4 +1,6 @@
 *.egg-info/
 .coverage
 .coverage.*
+.hypothesis/
 .tox/
+_trial_temp/
