@@ -12,6 +12,9 @@ def failed_with(matcher):
 
 
 def performed(perform, matcher):
+    """
+    Match against a result after performing a single action in a memory worker.
+    """
     return MatchesAll(
         AfterPreprocessing(lambda _: perform(), Equals(True)),
         matcher)
