@@ -1,0 +1,53 @@
+name: Python package
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+  schedule:
+    - cron: '15 14 * * *'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.experimental }}
+    strategy:
+      matrix:
+        python: [2.7, pypy2, 3.5, 3.6, 3.7, 3.8, 3.9, pypy3]
+        twisted: [twlatest, twlowest]
+        experimental: [false]
+        include:
+          - python: 3.9
+            twisted: bleeding
+            experimental: true
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Fetch tags
+        run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+      - name: Setup Python
+        uses: actions/setup-python@v2.1.3
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install Tox and any other packages
+        run: pip install tox
+      - name: Run Tox
+        run: tox -e py-${{ matrix.twisted }}
+      - name: Coverage
+        run: tox -e coverage-report
+      - name: Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          name: gh-${{ matrix.python }}-${{ matrix.twisted }}
+  flake8:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Check code style with Flake8
+        uses: TrueBrain/actions-flake8@v1.4.1
+        with:
+          path: src setup.py
