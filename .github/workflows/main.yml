@@ -11,10 +11,16 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.experimental }}
     strategy:
       matrix:
         python: [2.7, pypy2, 3.5, 3.6, 3.7, 3.8, 3.9, pypy3]
-        twisted: [twlatest, twlowest, bleeding]
+        twisted: [twlatest, twlowest]
+        experimental: [false]
+        include:
+          - python: 3.9
+            twisted: bleeding
+            experimental: true
     steps:
       - uses: actions/checkout@v2
         with:
