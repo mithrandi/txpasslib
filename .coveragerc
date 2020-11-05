@@ -2,7 +2,7 @@
 branch = True
 source = txpasslib
 omit =
-    src/txpasslib/_version.py
+    */txpasslib/_version.py
 
 [paths]
 source =
