@@ -1,5 +1,12 @@
 version = 1
 
+test_patterns = ["src/txpasslib/test/**"]
+
+exclude_patterns = [
+    "versioneer.py",
+    "src/txpasslib/_version.py"
+]
+
 [[analyzers]]
 name = "python"
 enabled = true
