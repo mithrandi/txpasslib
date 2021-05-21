@@ -48,6 +48,6 @@ jobs:
         with:
           fetch-depth: 0
       - name: Check code style with Flake8
-        uses: TrueBrain/actions-flake8@v1.5
+        uses: TrueBrain/actions-flake8@v1.6
         with:
           path: src setup.py
