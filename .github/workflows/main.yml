@@ -22,7 +22,7 @@ jobs:
             twisted: bleeding
             experimental: true
     steps:
-      - uses: actions/checkout@v3.0.2
+      - uses: actions/checkout@v3.1.0
         with:
           fetch-depth: 0
       - name: Fetch tags
@@ -44,7 +44,7 @@ jobs:
   flake8:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3.0.2
+      - uses: actions/checkout@v3.1.0
         with:
           fetch-depth: 0
       - name: Check code style with Flake8
